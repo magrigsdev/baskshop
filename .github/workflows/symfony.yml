@@ -1,11 +1,13 @@
 on: [pull_request]
 name: Main
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Configure Git to trust the repository directory
         run: git config --global --add safe.directory /app
+        
       - uses: actions/checkout@v3
 
       - name: Install Composer
@@ -13,15 +15,20 @@ jobs:
         with:
           php_version: 8.2
 
+      - name: Clear Composer cache
+        run: composer clear-cache
+
       # Fix permissions before composer operations
-      # If not some composer operations that need to update autoloader files will fail
       - name: Fix directory permissions
         run: sudo chown -R $USER:$USER .
 
-      - name: Install Dependencies
-        run: composer install
+      - name: Update Composer dependencies
+        run: composer update --no-scripts --no-progress
 
-      - name: Cache composer store
+      - name: Install Dependencies
+        run: composer install --no-dev
+
+      - name: Cache Composer store
         uses: actions/cache@v3
         with:
           path: ~/vendor
@@ -43,4 +50,3 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
-
