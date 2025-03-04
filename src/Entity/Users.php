@@ -38,7 +38,7 @@ class Users
     private ?string $Country = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Roles = "customer";
+    private ?string $Roles = 'customer';
 
     public function getId(): ?int
     {
