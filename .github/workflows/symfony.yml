@@ -18,15 +18,14 @@ jobs:
       - name: Clear Composer cache
         run: composer clear-cache
 
-      # Fix permissions before composer operations
       - name: Fix directory permissions
         run: sudo chown -R $USER:$USER .
 
       - name: Update Composer dependencies
-        run: composer update --no-scripts --no-progress --no-interaction
+        run: composer update --no-scripts --no-progress
 
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist 
+        run: composer install --no-dev
 
       - name: Cache Composer store
         uses: actions/cache@v3
