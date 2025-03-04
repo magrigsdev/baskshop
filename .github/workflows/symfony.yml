@@ -1,47 +1,46 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Symfony
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
-
+on: [pull_request]
+name: Main
 jobs:
-  symfony-tests:
+  build:
     runs-on: ubuntu-latest
     steps:
-    #  To automatically get bug fixes and new Php versions for shivammathur/setup-php,
-    # change this to (see https://github.com/shivammathur/setup-php#bookmark-versioning):
-    # uses: shivammathur/setup-php@v2
-    - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
-      with:
-        php-version: '8.0'
-    - uses: actions/checkout@v4
-    - name: Copy .env.test.local
-      run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Create Database
-      run: |
-        mkdir -p data
-        touch data/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
-      run: vendor/bin/phpunit
+      - name: Configure Git to trust the repository directory
+        run: git config --global --add safe.directory /app
+      - uses: actions/checkout@v3
+
+      - name: Install Composer
+        uses: php-actions/composer@v6
+        with:
+          php_version: 8.2
+
+      # Fix permissions before composer operations
+      # If not some composer operations that need to update autoloader files will fail
+      - name: Fix directory permissions
+        run: sudo chown -R $USER:$USER .
+
+      - name: Install Dependencies
+        run: composer install
+
+      - name: Cache composer store
+        uses: actions/cache@v3
+        with:
+          path: ~/vendor
+          key: ${{ runner.OS }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-composer-
+
+      - name: Lint PHP
+        run: find . -name "*.php" -type f -not -path "./vendor/*" -not -path "./var/*" -exec php -l {} \;
+
+      - name: Lint Style
+        run: vendor/bin/php-cs-fixer fix --diff --dry-run
+
+      - name: Setup test db
+        run: php bin/console doctrine:database:create --env=test
+
+      - name: Run migrations
+        run: php bin/console doctrine:migrations:migrate --env=test -n
+
+      - name: Run tests
+        run: vendor/bin/phpunit
+
