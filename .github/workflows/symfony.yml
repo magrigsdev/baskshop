@@ -20,6 +20,9 @@ jobs:
 
       - name: Fix directory permissions
         run: sudo chown -R $USER:$USER .
+        
+      - name: install compser depencies initial
+        run:  composer require symfony/maker-bundle --dev
 
       - name: Update Composer dependencies
         run: composer update --no-scripts --no-progress
