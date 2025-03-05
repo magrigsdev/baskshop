@@ -18,4 +18,9 @@ class Error
     {
         return 'json format invalid';
     }
+
+    public static function array_empty($array = 'array'): string
+    {
+        return $array.'array is empty';
+    }
 }

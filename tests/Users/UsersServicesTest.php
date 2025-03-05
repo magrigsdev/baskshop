@@ -22,6 +22,16 @@ class UsersServicesTest extends KernelTestCase
         $this->projectDir = $container->getParameter('kernel.project_dir');
     }
 
+    protected function tearDown(): void
+    {
+        $users = $this->usersRepository->findAll();
+        foreach ($users as $user) {
+            $this->entityManager->remove($user);
+        }
+        $this->entityManager->flush();
+        parent::tearDown();
+    }
+
     public function testGetusers(): void
     {
         $json = $this->projectDir.'/public/files_json/users_data.json';
@@ -31,16 +41,12 @@ class UsersServicesTest extends KernelTestCase
         $this->assertNotEmpty($users, 'array of users');
     }
 
-    // public function testImportThemeSave(): void
-    // {
-    //     $ExtractServices = new ExtractService($this->entityManager, $this->projectDir);
-    //     $excel_file = $this->projectDir.'/public/File/emissions_GES_structure.xlsx';
-    //     $themes = $ExtractServices->GetThemesFromExcelFile($excel_file);
-    //     $preparedThemes = $ExtractServices->PrepareThemesForDatabase($themes);
-    //     $saveThemes = $ExtractServices->SaveThemesOnDatabase($preparedThemes);
-
-    //     $this->assertTrue($saveThemes, 'themes are saved');
-    //     $this->assertTrue($this->themeRepository->isFirstThemeParentIdNull(), 'first theme has ParentId : null');
-    //     $this->assertTrue($this->themeRepository->isAllThemesParentIdAreNotNull////(), 'The parentId for all themes is not null, except for the first theme.');
-    // }
+    public function testPutusers(): void
+    {
+        $json = $this->projectDir.'/public/files_json/users_data.json';
+        $usersservices = new UsersServices($this->entityManager, $this->projectDir);
+        $users = $usersservices->getUsersFromFile($json);
+        $putusers = $usersservices->putUsersIntoDatabase($users);
+        $this->assertNotFalse($putusers);
+    }
 }
