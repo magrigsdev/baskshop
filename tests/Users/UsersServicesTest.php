@@ -22,14 +22,13 @@ class UsersServicesTest extends KernelTestCase
         $this->projectDir = $container->getParameter('kernel.project_dir');
     }
 
-
-    public function testGetusers():void 
+    public function testGetusers(): void
     {
         $json = $this->projectDir.'/public/files_json/users_data.json';
-        $usersservices = new UsersServices($this->entityManager,$this->projectDir);
+        $usersservices = new UsersServices($this->entityManager, $this->projectDir);
         $users = $usersservices->getUsersFromFile($json);
-        //dump($users);
-        $this->assertNotEmpty($users, "array of users");
+        // dump($users);
+        $this->assertNotEmpty($users, 'array of users');
     }
 
     // public function testImportThemeSave(): void
@@ -43,5 +42,5 @@ class UsersServicesTest extends KernelTestCase
     //     $this->assertTrue($saveThemes, 'themes are saved');
     //     $this->assertTrue($this->themeRepository->isFirstThemeParentIdNull(), 'first theme has ParentId : null');
     //     $this->assertTrue($this->themeRepository->isAllThemesParentIdAreNotNull////(), 'The parentId for all themes is not null, except for the first theme.');
-    //}
+    // }
 }

@@ -13,5 +13,4 @@ class UsersTest extends TestCase
         $user->setRoles('customer');
         $this->assertSame('customer', $user->getRoles(), 'Role of user');
     }
-    
 }

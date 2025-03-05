@@ -1,6 +1,7 @@
-<?php 
+<?php
+
 namespace App\Messages;
-final class Info 
+
+final class Info
 {
-    
 }
