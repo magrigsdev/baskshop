@@ -3,6 +3,7 @@
 namespace App\Tests\Users\Repository;
 
 use App\Entity\Users;
+use App\Enum\Roles;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UsersRepositoryTest extends KernelTestCase
@@ -37,7 +38,7 @@ class UsersRepositoryTest extends KernelTestCase
         $user->setCountry('France');
         $user->setLastName('Banis');
         $user->setFirstName('yass');
-        $user->setRoles('customer');
+        $user->setRoles(Roles::ACCUNTANT);
         $user->setPostalCode('66576');
         $user->setEmail('gh@ggg.com');
         $user->setPassword('hgy');

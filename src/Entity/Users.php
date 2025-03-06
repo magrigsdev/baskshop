@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Enum\Roles;
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 class Users
 {
@@ -37,8 +37,8 @@ class Users
     #[ORM\Column(length: 255)]
     private ?string $Country = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Roles = 'customer';
+    #[ORM\Column(length: 255, enumType: Roles::class)]
+    private ?Roles $Role = null;
 
     public function getId(): ?int
     {
@@ -141,14 +141,14 @@ class Users
         return $this;
     }
 
-    public function getRoles(): ?string
+    public function getRoles(): ?Roles
     {
-        return $this->Roles;
+        return $this->Role;
     }
 
-    public function setRoles(string $Roles): static
+    public function setRoles(Roles $role): self
     {
-        $this->Roles = $Roles;
+        $this->Role = $role;
 
         return $this;
     }
