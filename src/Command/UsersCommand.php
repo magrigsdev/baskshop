@@ -47,12 +47,13 @@ class UsersCommand extends Command
 
             if (!file_exists($json)) {
                 $io->error('file does not exist');
+
                 return Command::FAILURE;
             }
             try {
                 $users = $usersservices->getUsersFromFile($json);
                 $put = $usersservices->putUsersIntoDatabase($users);
-                
+
                 $io->info(count($users).' users getting');
 
                 if ($put) {
@@ -69,6 +70,4 @@ class UsersCommand extends Command
 
         return Command::SUCCESS;
     }
-
-    
 }
