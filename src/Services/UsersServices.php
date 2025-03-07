@@ -32,7 +32,7 @@ class UsersServices
         }
         $users = json_decode($users_json, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \Exception($this->error::json_invalid);
+            throw new \Exception($this->error::json_invalid());
         }
 
         return $users;
