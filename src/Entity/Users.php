@@ -38,8 +38,8 @@ class Users
     #[ORM\Column(length: 255)]
     private ?string $Country = null;
 
-    #[ORM\Column(length: 255, enumType: Roles::class)]
-    private ?Roles $Role = null;
+    #[ORM\Column(length: 255)]
+    private ?string $Roles = null;
 
     public function getId(): ?int
     {
@@ -142,14 +142,14 @@ class Users
         return $this;
     }
 
-    public function getRoles(): ?Roles
+    public function getRoles(): ?string
     {
-        return $this->Role;
+        return $this->Roles;
     }
 
-    public function setRoles(Roles $role): self
+    public function setRoles(string $role): self
     {
-        $this->Role = $role;
+        $this->Roles = $role;
 
         return $this;
     }

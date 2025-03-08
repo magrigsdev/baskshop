@@ -10,7 +10,7 @@ class UsersTest extends TestCase
     public function testUserEntity(): void
     {
         $user = new Users();
-        $user->setRoles('customer');
-        $this->assertSame('customer', $user->getRoles(), 'Role of user');
+        $user->setRoles("admin");
+        $this->assertSame("admin", $user->getRoles(), 'Role of user');
     }
 }

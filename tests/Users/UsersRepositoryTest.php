@@ -38,7 +38,7 @@ class UsersRepositoryTest extends KernelTestCase
         $user->setCountry('France');
         $user->setLastName('Banis');
         $user->setFirstName('yass');
-        $user->setRoles(Roles::ACCUNTANT);
+        $user->setRoles( "admin");
         $user->setPostalCode('66576');
         $user->setEmail('gh@ggg.com');
         $user->setPassword('hgy');

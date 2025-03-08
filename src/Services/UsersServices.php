@@ -3,16 +3,14 @@
 namespace App\Services;
 
 use App\Entity\Users;
-use App\Messages\Error;
+use App\Enum\Roles;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Exception;
 class UsersServices
 {
     private $projectDir;
     private $entityManager;
     private $usersRepository;
-
-    private Error $error;
 
     public function __construct(EntityManagerInterface $entityManager, string $projectDir)
     {
@@ -24,15 +22,15 @@ class UsersServices
     public function getUsersFromFile(string $json_file): array
     {
         if (!file_exists($json_file)) {
-            throw new \Exception($this->error::file_not_found($json_file));
+            throw new Exception("File not exist " .$json_file);
         }
         $users_json = file_get_contents($json_file);
         if (false === $users_json) {
-            throw new \Exception($this->error::file_failed_to_read($json_file));
+            throw new Exception( "File failed to read" .$json_file);
         }
         $users = json_decode($users_json, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \Exception($this->error::json_invalid());
+            throw new Exception("json not valid");
         }
 
         return $users;
@@ -41,7 +39,7 @@ class UsersServices
     public function putUsersIntoDatabase(array $users): bool
     {
         if (empty($users)) {
-            throw new \Exception($this->error::array_empty('users'));
+            throw new Exception("No users to insert");
         }
 
         foreach ($users as $user) {
@@ -61,4 +59,5 @@ class UsersServices
 
         return true;
     }
+
 }
