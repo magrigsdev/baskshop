@@ -46,7 +46,9 @@ class BasketsServices
             ->setBrand($basket['brands'])
             ->setColor($basket['colors'])
             ->setName($basket['name'])
-            ->setSize($basket['size']);
+            ->setSize($basket['size'])
+            ->setPrice($basket['price']) ;
+            
 
             $this->entity_manager->persist($new_basket);
             $this->entity_manager->flush();
