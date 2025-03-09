@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Users;
-use App\Services\UsersServices;
+use App\Entity\Baskets;
+use App\Services\BasketsServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -13,37 +13,37 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'users-command',
-    description: 'get users and import them into the database',
+    name: 'baskets-command',
+    description: 'get basket and import them into the database',
 )]
-class UsersCommand extends Command
+class BasketCommand extends Command
 {
     private $project_dir;
     private $entity_manager;
-    private $users_Repository;
+    private $basket_repository;
 
     public function __construct(string $project_dir, EntityManagerInterface $entity_manager)
     {
         $this->project_dir = $project_dir;
         $this->entity_manager = $entity_manager;
-        $this->themeRepository = $entity_manager->getRepository(Users::class);
+        $this->basket_repository = $entity_manager->getRepository(Baskets::class);
         parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-        ->addArgument('putusers', InputArgument::OPTIONAL, 'put users into database themes');
+        ->addArgument('putbaskets', InputArgument::OPTIONAL, 'put baskets into database baskets');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $putusers = $input->getArgument('putusers');
-        $users_services = new UsersServices($this->entity_manager, $this->project_dir);
+        $putbaskets = $input->getArgument('putbaskets');
+        $baskets_service = new BasketsServices($this->entity_manager, $this->project_dir);
 
-        if ($putusers) {
-            $json = $this->project_dir.'/var/json/users.json';
+        if ($putbaskets) {
+            $json = $this->project_dir.'/var/json/baskets.json';
 
             if (!file_exists($json)) {
                 $io->error('file does not exist');
@@ -51,13 +51,13 @@ class UsersCommand extends Command
                 return Command::FAILURE;
             }
             try {
-                $users = $users_services->getUsersFromFile($json);
-                $put = $users_services->putUsersIntoDatabase($users);
+                $baskets = $baskets_service->getBasketsFromFile($json);
+                $put = $baskets_service->putBasketsIntoDatabase($baskets);
 
-                $io->info(count($users).' users getting');
+                $io->info(count($baskets).' baskets getting');
 
                 if ($put) {
-                    $io->info($this->users_Repository->count([]).' users put into database');
+                    $io->info($this->basket_repository->count([]).' baskets put into database');
                 }
             } catch (\Exception $e) {
                 $io->error('Erreur lors de la lecture du fichier : '.$e->getMessage());
