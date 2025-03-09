@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Entity\Users;
-use App\Enum\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 class UsersServices

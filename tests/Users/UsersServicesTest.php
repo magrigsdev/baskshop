@@ -34,19 +34,19 @@ class UsersServicesTest extends KernelTestCase
 
     public function testGetusers(): void
     {
-        $json = $this->projectDir."/var/json/users_data.json";
+        $json = $this->projectDir."/var/json/users.json";
         if (!file_exists($json)){
             throw new Exception('File not found', 1);
         }
         $usersservices = new UsersServices($this->entityManager, $this->projectDir);
         $users = $usersservices->getUsersFromFile($json);
-        dump($users);
+        //dump($users);
         $this->assertNotEmpty($users, 'array of users');
     }
 
     public function testPutusers(): void
     {
-        $json = $this->projectDir.'/var/json/users_data.json';
+        $json = $this->projectDir.'/var/json/users.json';
         if (!file_exists($json)){
             throw new Exception('File not found', 1);
         }
