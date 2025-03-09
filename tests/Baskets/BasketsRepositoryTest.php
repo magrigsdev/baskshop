@@ -33,13 +33,13 @@ class BasketsRepositoryTest extends KernelTestCase
     public function testAddBasket(): void
     {
         $basket = new Baskets();
-        $basket->setBrand("adidas");
-        $basket->setColor("red, green");
-        $basket->setName("derby");
-        $basket->setSize("45");
-        $basket->setPrice("100");
-        
-        dump($basket);
+        $basket->setBrand('adidas');
+        $basket->setColor('red, green');
+        $basket->setName('derby');
+        $basket->setSize('45');
+        $basket->setPrice('100');
+
+        // dump($basket);
         $this->entity_manager->persist($basket);
         $this->entity_manager->flush();
         $this->assertNotNull($basket->getId());

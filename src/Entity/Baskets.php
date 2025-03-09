@@ -80,6 +80,7 @@ class Baskets
 
         return $this;
     }
+
     public function getPrice(): ?string
     {
         return $this->price;

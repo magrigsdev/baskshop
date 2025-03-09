@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Entity\Users;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+
 class UsersServices
 {
     private $projectDir;
@@ -21,15 +21,15 @@ class UsersServices
     public function getUsersFromFile(string $json_file): array
     {
         if (!file_exists($json_file)) {
-            throw new Exception("File not exist " .$json_file);
+            throw new \Exception('File not exist '.$json_file);
         }
         $users_json = file_get_contents($json_file);
         if (false === $users_json) {
-            throw new Exception( "File failed to read" .$json_file);
+            throw new \Exception('File failed to read'.$json_file);
         }
         $users = json_decode($users_json, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new Exception("json not valid");
+            throw new \Exception('json not valid');
         }
 
         return $users;
@@ -38,7 +38,7 @@ class UsersServices
     public function putUsersIntoDatabase(array $users): bool
     {
         if (empty($users)) {
-            throw new Exception("No users to insert");
+            throw new \Exception('No users to insert');
         }
 
         foreach ($users as $user) {
@@ -58,5 +58,4 @@ class UsersServices
 
         return true;
     }
-
 }

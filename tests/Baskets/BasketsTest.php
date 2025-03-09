@@ -10,7 +10,7 @@ class BasketsTest extends TestCase
     public function testBasketEntity(): void
     {
         $basket = new Baskets();
-        $basket->setBrand("adidas");
-        $this->assertEquals("adidas",$basket->getBrand());
+        $basket->setBrand('adidas');
+        $this->assertEquals('adidas', $basket->getBrand());
     }
 }

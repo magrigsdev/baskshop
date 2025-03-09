@@ -5,7 +5,7 @@ namespace App\Tests;
 use App\Entity\Users;
 use App\Services\UsersServices;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Exception;
+
 class UsersServicesTest extends KernelTestCase
 {
     private $entityManager;
@@ -34,26 +34,26 @@ class UsersServicesTest extends KernelTestCase
 
     public function testGetusers(): void
     {
-        $json = $this->projectDir."/var/json/users.json";
-        if (!file_exists($json)){
-            throw new Exception('File not found', 1);
+        $json = $this->projectDir.'/var/json/users.json';
+        if (!file_exists($json)) {
+            throw new \Exception('File not found', 1);
         }
         $usersservices = new UsersServices($this->entityManager, $this->projectDir);
         $users = $usersservices->getUsersFromFile($json);
-        //dump($users);
+        // dump($users);
         $this->assertNotEmpty($users, 'array of users');
     }
 
     public function testPutusers(): void
     {
         $json = $this->projectDir.'/var/json/users.json';
-        if (!file_exists($json)){
-            throw new Exception('File not found', 1);
+        if (!file_exists($json)) {
+            throw new \Exception('File not found', 1);
         }
         $usersservices = new UsersServices($this->entityManager, $this->projectDir);
         $users = $usersservices->getUsersFromFile($json);
 
         $putusers = $usersservices->putUsersIntoDatabase($users);
         $this->assertNotFalse($putusers);
-    } 
+    }
 }
