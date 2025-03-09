@@ -53,7 +53,6 @@ class UsersServicesTest extends KernelTestCase
         $usersservices = new UsersServices($this->entityManager, $this->projectDir);
         $users = $usersservices->getUsersFromFile($json);
 
-        dump($users);
         $putusers = $usersservices->putUsersIntoDatabase($users);
         $this->assertNotFalse($putusers);
     } 

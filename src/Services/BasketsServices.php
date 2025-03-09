@@ -14,7 +14,7 @@ class BasketsServices
     public function __construct(entityManagerInterface $entity_manager, string $project_dir)
     {
         $this->entity_manager = $entity_manager;
-        $this->usersRepository = $entity_manager->getRepository(Baskets::class);
+        $this->baskets_repository = $entity_manager->getRepository(Baskets::class);
         $this->project_dir = $project_dir;
     }
 
@@ -43,13 +43,12 @@ class BasketsServices
 
         foreach ($baskets as $basket) {
             $new_basket = (new Baskets())
-            ->setBrand($basket['brands'])
+            ->setBrand($basket['brand'])
             ->setColor($basket['colors'])
             ->setName($basket['name'])
             ->setSize($basket['size'])
             ->setPrice($basket['price']) ;
             
-
             $this->entity_manager->persist($new_basket);
             $this->entity_manager->flush();
         }
