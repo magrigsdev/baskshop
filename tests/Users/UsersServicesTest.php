@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Users;
+use App\imports\Ingest;
 use App\Services\UsersServices;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -32,28 +33,23 @@ class UsersServicesTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testGetusers(): void
+    public function testImportUsers(): void
     {
         $json = $this->projectDir.'/var/json/users.json';
-        if (!file_exists($json)) {
-            throw new \Exception('File not found', 1);
-        }
-        $usersservices = new UsersServices($this->entityManager, $this->projectDir);
-        $users = $usersservices->getUsersFromFile($json);
+        $ingest = new Ingest();
+        $users = $ingest->getJson($json);
+
         // dump($users);
         $this->assertNotEmpty($users, 'array of users');
     }
 
-    public function testPutusers(): void
+    public function testSaveUsers(): void
     {
         $json = $this->projectDir.'/var/json/users.json';
-        if (!file_exists($json)) {
-            throw new \Exception('File not found', 1);
-        }
-        $usersservices = new UsersServices($this->entityManager, $this->projectDir);
-        $users = $usersservices->getUsersFromFile($json);
-
-        $putusers = $usersservices->putUsersIntoDatabase($users);
-        $this->assertNotFalse($putusers);
+        $ingest = new Ingest();
+        $users = $ingest->getJson($json);
+        $usersServices = new UsersServices($this->entityManager, $this->projectDir);
+        $saveUsers = $usersServices->saveUsers($users);
+        $this->assertNotFalse($saveUsers);
     }
 }

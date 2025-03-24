@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Baskets;
+use App\imports\Ingest;
 use App\Services\BasketsServices;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -32,29 +33,21 @@ class BasketsServiceTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testGetBaskets(): void
+    public function testImportBaskets(): void
     {
-        $json = $this->project_dir.'/var/json/baskets.json';
-        if (!file_exists($json)) {
-            throw new \Exception('File not found', 1);
-        }
-        $basket_service = new BasketsServices($this->entity_manager, $this->project_dir);
-        $baskets = $basket_service->getBasketsFromFile($json);
-        // dump($users);
-        $this->assertNotEmpty($baskets, 'array of baskets');
+        $json = $this->project_dir.'/var/json/basket.json';
+        $basket_import = new Ingest();
+        $basket_imported = $basket_import->getJson($json);
+        $this->assertNotEmpty($basket_imported, 'array of baskets');
     }
 
-    public function testPutBasket(): void
+    public function testSaveBasket(): void
     {
-        $json = $this->project_dir.'/var/json/baskets.json';
-        if (!file_exists($json)) {
-            throw new \Exception('File not found', 1);
-        }
+        $json = $this->project_dir.'/var/json/basket.json';
+        $basket_import = new Ingest();
+        $basket_imported = $basket_import->getJson($json);
         $basket_service = new BasketsServices($this->entity_manager, $this->project_dir);
-        $baskets = $basket_service->getBasketsFromFile($json);
-
-        // dump($baskets);
-        $putBaskets = $basket_service->putBasketsIntoDatabase($baskets);
-        $this->assertNotFalse($putBaskets);
+        $saveBaskets = $basket_service->saveBaskets($basket_imported);
+        $this->assertNotFalse($saveBaskets);
     }
 }
