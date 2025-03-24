@@ -15,5 +15,4 @@ class BasketsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Baskets::class);
     }
-
 }

@@ -1,23 +1,22 @@
-<?php 
+<?php
 
 namespace App\imports;
 
- class Ingest 
+class Ingest
 {
-    function getJson($filePath) {
+    public function getJson($filePath): array
+    {
         if (!file_exists($filePath)) {
-            return ["error" => "File not found."];
+            return ['error' => 'File not found.'];
         }
-    
+
         $jsonData = file_get_contents($filePath);
         $data = json_decode($jsonData, true);
-    
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return ["error" => "Invalid JSON format."];
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            return ['error' => 'Invalid JSON format.'];
         }
-    
+
         return $data;
     }
-    
-    
 }
