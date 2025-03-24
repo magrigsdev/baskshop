@@ -7,3 +7,4 @@ return [
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => false],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
 ];
+
