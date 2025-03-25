@@ -20,22 +20,24 @@ jobs:
 
       - name: Fix directory permissions
         run: sudo chown -R $USER:$USER .
-        
-      - name: install compser depencies initial
-        run:  composer require symfony/maker-bundle --dev
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist
+
+      - name: Clear cache in dev mode
+        run: php bin/console cache:clear --env=dev || rm -rf var/cache/*
+
+      - name: Install MakerBundle for dev
+        run: composer require symfony/maker-bundle --dev
 
       - name: Update Composer dependencies
         run: composer update --no-scripts --no-progress
-      
-      - name: Clear cache before install
-        run: php bin/console cache:clear --env=prod || rm -rf var/cache/*
 
-      - name: Install Dependencies
+      - name: Install Dependencies without dev (for production)
         run: composer install --no-dev
       
       - name: Regenerate autoload
         run: composer dump-autoload --optimize
-
 
       - name: Cache Composer store
         uses: actions/cache@v3
