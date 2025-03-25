@@ -1,3 +1,4 @@
+# filepath: d:\PROJETS\baskshop\.github\workflows\symfony.yml
 on: [pull_request]
 name: Main
 
@@ -7,7 +8,7 @@ jobs:
     steps:
       - name: Configure Git to trust the repository directory
         run: git config --global --add safe.directory /app
-        
+
       - uses: actions/checkout@v3
 
       - name: Install Composer
