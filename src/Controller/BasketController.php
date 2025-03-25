@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BasketController extends AbstractController
 {
-    #[Route('/api/basket', name: 'app_basket')]
+    #[Route('/basket', name: 'app_basket')]
     public function index(): JsonResponse
     {
         return $this->json([
