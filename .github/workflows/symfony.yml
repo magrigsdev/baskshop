@@ -21,21 +21,21 @@ jobs:
       - name: Fix directory permissions
         run: sudo chown -R $USER:$USER .
 
+      - name: Remove vendor directory
+        run: rm -rf vendor composer.lock
+
       - name: Install Composer dependencies
-        run: composer install --prefer-dist
+        run: composer install --prefer-dist --no-interaction
 
-      - name: Clear cache in dev mode
-        run: php bin/console cache:clear --env=dev || rm -rf var/cache/*
+      - name: Check if MakerBundle is installed
+        run: |
+          if ! composer show | grep -q "symfony/maker-bundle"; then
+            composer require symfony/maker-bundle --dev
+          fi
 
-      - name: Install MakerBundle for dev
-        run: composer require symfony/maker-bundle --dev
+      - name: Clear Symfony cache
+        run: php bin/console cache:clear --env=prod || rm -rf var/cache/*
 
-      - name: Update Composer dependencies
-        run: composer update --no-scripts --no-progress
-
-      - name: Install Dependencies without dev (for production)
-        run: composer install --no-dev
-      
       - name: Regenerate autoload
         run: composer dump-autoload --optimize
 
