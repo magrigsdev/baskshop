@@ -37,7 +37,7 @@ class BasketsServices
                 ->setName($basket['name'])
                 ->setSize($basket['size'])
                 ->setPrice($basket['price']);
-            // Persistez l'objet dans la base de données    
+            // Persistez l'objet dans la base de données
         }
         $this->entity_manager->persist($new_basket);
         // Effectuez un flush après avoir persisté tous les objets
