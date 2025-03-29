@@ -25,6 +25,10 @@ class BasketsServices
         }
 
         foreach ($baskets as $basket) {
+            if(!is_array($basket)) {
+                throw new \Exception('Invalid basket format: expected array, got ' . gettype($basket));
+            }
+
             $new_basket = (new Baskets())
             ->setBrand($basket['brand'])
             ->setColor($basket['color'])
@@ -39,8 +43,4 @@ class BasketsServices
         return true;
     }
 
-    private function convertColorsInColor(array $colors)
-    {
-        return implode(', ', $colors);
-    }
 }
