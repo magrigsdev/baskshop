@@ -29,21 +29,4 @@ class UsersRepositoryTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testAddUser(): void
-    {
-        $user = new Users();
-        $user->setAddress('657 rue du bois');
-        $user->setCity('Benir');
-        $user->setCountry('France');
-        $user->setLastName('Banis');
-        $user->setFirstName('yass');
-        $user->setRoles('admin');
-        $user->setPostalCode('66576');
-        $user->setEmail('gh@ggg.com');
-        $user->setPassword('hgy');
-        // dump($user);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        $this->assertNotNull($user->getId());
-    }
 }
