@@ -24,20 +24,20 @@ class BasketsServices
             throw new \Exception('No baskets to insert');
         }
         foreach ($baskets as $basket) {
-            if (!is_array($basket)) {
-                throw new \Exception('Invalid basket format: expected array, got '.gettype($basket));
-            }
             $new_basket = new Baskets();
             $new_basket->setBrand($basket['brand']);
-            $new_basket->setColor($basket['color']);
             $new_basket->setName($basket['name']);
+            $new_basket->setColor($basket['color']);
             $new_basket->setSize($basket['size']);
             $new_basket->setPrice($basket['price']);
             $this->entity_manager->persist($new_basket);
         }
-        $this->entity_manager->flush();
-        $this->entity_manager->clear();
+        try {
+            $this->entity_manager->flush();
 
-        return true;
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception('Error saving baskets: '.$e->getMessage());
+        }
     }
 }

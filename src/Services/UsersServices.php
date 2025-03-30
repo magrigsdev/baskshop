@@ -37,9 +37,12 @@ class UsersServices
             $new_user->setRoles($user['roles']);
             $this->entityManager->persist($new_user);
         }
-        $this->entityManager->flush();
-        $this->entityManager->clear();
+        try {
+            $this->entityManager->flush();
 
-        return true;
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception('Error saving baskets: '.$e->getMessage());
+        }
     }
 }
