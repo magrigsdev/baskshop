@@ -27,12 +27,12 @@ class BasketsServices
             if (!is_array($basket)) {
                 throw new \Exception('Invalid basket format: expected array, got '.gettype($basket));
             }
-            $new_basket = (new Baskets())
-                ->setBrand($basket['brand'])
-                ->setColor($basket['color'])
-                ->setName($basket['name'])
-                ->setSize($basket['size'])
-                ->setPrice($basket['price']);
+            $new_basket = new Baskets();
+            $new_basket->setBrand($basket['brand']);
+            $new_basket->setColor($basket['color']);
+            $new_basket->setName($basket['name']);
+            $new_basket->setSize($basket['size']);
+            $new_basket->setPrice($basket['price']);
             $this->entity_manager->persist($new_basket);
         }
         $this->entity_manager->flush();
