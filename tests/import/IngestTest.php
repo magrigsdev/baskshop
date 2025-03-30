@@ -14,10 +14,10 @@ class IngestTest extends KernelTestCase
         self::bootKernel();
         $this->project_dir = static::getContainer()->getParameter('kernel.project_dir');
 
-        $json_file = $this->project_dir.'/var/test/ingestTest.json';
+        $json_file = $this->project_dir.'/var/test/ingest.json';
         $ingest = new Ingest();
         $result = $ingest->get($json_file);
-
         $this->assertIsArray($result, 'The result should be an array.');
+        dump($result);
     }
 }

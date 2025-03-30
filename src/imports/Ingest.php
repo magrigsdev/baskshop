@@ -23,6 +23,17 @@ class Ingest
             return ['error' => 'Invalid JSON format: '.$e->getMessage()];
         }
 
+        return $this->sanitizeData($data);
+    }
+
+    private function sanitizeData(array $data): array
+    {
+        array_walk_recursive($data, function (&$value) {
+            if (is_string($value)) {
+                $value = htmlspecialchars(strip_tags(trim($value)), ENT_QUOTES, 'UTF-8');
+            }
+        });
+
         return $data;
     }
 }
