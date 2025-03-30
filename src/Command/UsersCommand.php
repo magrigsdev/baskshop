@@ -3,17 +3,17 @@
 namespace App\Command;
 
 use App\Entity\Users;
+use App\imports\Ingest;
 use App\Services\UsersServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'userscommand',
+    name: 'imports-users',
     description: 'get users and import them into the database',
 )]
 class UsersCommand extends Command
@@ -26,46 +26,40 @@ class UsersCommand extends Command
     {
         $this->projectDir = $projectDir;
         $this->entityManager = $entityManager;
-        $this->themeRepository = $entityManager->getRepository(Users::class);
+        $this->usersRepository = $entityManager->getRepository(Users::class);
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-        ->addArgument('putusers', InputArgument::OPTIONAL, 'put users into database themes');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $putusers = $input->getArgument('putusers');
         $usersservices = new UsersServices($this->entityManager, $this->projectDir);
 
-        if ($putusers) {
-            $json = $this->projectDir.'/public/files_json/users_data.json';
+        $user_json = $this->projectDir.'/var/json/users.json';
 
-            if (!file_exists($json)) {
-                $io->error('file does not exist');
+        if (!file_exists($user_json)) {
+            $io->error('file does not exist');
 
-                return Command::FAILURE;
+            return Command::FAILURE;
+        }
+
+        $read_json = new Ingest();
+        $users = [];
+
+        try {
+            $users = $read_json->getJson($user_json);
+
+            $save = $usersservices->saveUsers($users);
+
+            $io->info(count($users).' users getting');
+
+            if ($save) {
+                $io->info($this->usersRepository->count([]).' users put into database');
             }
-            try {
-                $users = $usersservices->getUsersFromFile($json);
-                $put = $usersservices->putUsersIntoDatabase($users);
+        } catch (\Exception $e) {
+            $io->error('Erreur lors de la lecture du fichier : '.$e->getMessage());
 
-                $io->info(count($users).' users getting');
-
-                if ($put) {
-                    $io->info($this->usersRepository->count([]).' users put into database');
-                }
-            } catch (\Exception $e) {
-                $io->error('Erreur lors de la lecture du fichier : '.$e->getMessage());
-
-                return Command::FAILURE;
-            }
-
-            return Command::SUCCESS;
+            return Command::FAILURE;
         }
 
         return Command::SUCCESS;

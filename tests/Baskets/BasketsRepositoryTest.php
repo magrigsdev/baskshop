@@ -38,8 +38,6 @@ class BasketsRepositoryTest extends KernelTestCase
         $basket->setName('derby');
         $basket->setSize('45');
         $basket->setPrice('100');
-
-        // dump($basket);
         $this->entity_manager->persist($basket);
         $this->entity_manager->flush();
         $this->assertNotNull($basket->getId());

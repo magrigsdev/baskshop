@@ -1,3 +1,4 @@
+# filepath: d:\PROJETS\baskshop\.github\workflows\symfony.yml
 on: [pull_request]
 name: Main
 
@@ -7,28 +8,37 @@ jobs:
     steps:
       - name: Configure Git to trust the repository directory
         run: git config --global --add safe.directory /app
-        
+
       - uses: actions/checkout@v3
 
       - name: Install Composer
         uses: php-actions/composer@v6
         with:
-          php_version: 8.2
+          php_version: 8.3
 
       - name: Clear Composer cache
         run: composer clear-cache
 
       - name: Fix directory permissions
         run: sudo chown -R $USER:$USER .
-        
-      - name: install compser depencies initial
-        run:  composer require symfony/maker-bundle --dev
 
-      - name: Update Composer dependencies
-        run: composer update --no-scripts --no-progress
+      - name: Remove vendor directory
+        run: rm -rf vendor composer.lock
 
-      - name: Install Dependencies
-        run: composer install --no-dev
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Check if MakerBundle is installed
+        run: |
+          if ! composer show | grep -q "symfony/maker-bundle"; then
+            composer require symfony/maker-bundle --dev
+          fi
+
+      - name: Clear Symfony cache
+        run: php bin/console cache:clear --env=prod || rm -rf var/cache/*
+
+      - name: Regenerate autoload
+        run: composer dump-autoload --optimize
 
       - name: Cache Composer store
         uses: actions/cache@v3
