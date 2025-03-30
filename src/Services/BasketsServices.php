@@ -34,8 +34,9 @@ class BasketsServices
                 ->setSize($basket['size'])
                 ->setPrice($basket['price']);
             $this->entity_manager->persist($new_basket);
-            $this->entity_manager->flush();
         }
+        $this->entity_manager->flush();
+        $this->entity_manager->clear();
 
         return true;
     }

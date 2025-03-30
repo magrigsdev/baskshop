@@ -36,8 +36,9 @@ class UsersServices
             ->setPostalCode($user['postalCode'])
             ->setRoles($user['roles']);
             $this->entityManager->persist($newuser);
-            $this->entityManager->flush();
         }
+        $this->entityManager->flush();
+        $this->entityManager->clear();
 
         return true;
     }
