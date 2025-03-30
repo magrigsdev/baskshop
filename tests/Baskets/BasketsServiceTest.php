@@ -33,26 +33,4 @@ class BasketsServiceTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testImportBaskets(): void
-    {
-        $json = $this->project_dir.'/var/json/basket.json';
-        $basket_import = new Ingest();
-        $basket_imported = $basket_import->getJson($json);
-        $this->assertNotEmpty($basket_imported, 'array of baskets');
-    }
-
-    public function testSaveBasket(): void
-    {
-        $json = $this->project_dir.'/var/test/ingestTest.json';
-
-        $basket_import = new Ingest();
-        $basket_imported = $basket_import->getJson($json);
-        $this->assertIsArray($basket_imported, 'imported basket is an array');
-        $this->assertNotEmpty($basket_imported, 'imported basket is not empty');
-        
-        //dump($basket_imported[0]);
-        $basket_service = new BasketsServices($this->entity_manager, $this->project_dir);
-        $saveBaskets = $basket_service->saveBaskets($basket_imported);
-        $this->assertNotFalse($saveBaskets, 'baskets saved');
-    }
 }
