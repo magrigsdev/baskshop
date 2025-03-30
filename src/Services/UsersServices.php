@@ -17,6 +17,4 @@ class UsersServices
         $this->usersRepository = $entityManager->getRepository(Users::class);
         $this->projectDir = $projectDir;
     }
-
-   
 }
