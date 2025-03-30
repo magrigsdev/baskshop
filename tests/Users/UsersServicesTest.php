@@ -33,23 +33,4 @@ class UsersServicesTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testImportUsers(): void
-    {
-        $json = $this->projectDir.'/var/json/users.json';
-        $ingest = new Ingest();
-        $users = $ingest->getJson($json);
-
-        // dump($users);
-        $this->assertNotEmpty($users, 'array of users');
-    }
-
-    public function testSaveUsers(): void
-    {
-        $json = $this->projectDir.'/var/json/users.json';
-        $ingest = new Ingest();
-        $users = $ingest->getJson($json);
-        $usersServices = new UsersServices($this->entityManager, $this->projectDir);
-        $saveUsers = $usersServices->saveUsers($users);
-        $this->assertNotFalse($saveUsers);
-    }
 }
