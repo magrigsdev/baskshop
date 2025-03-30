@@ -3,8 +3,6 @@
 namespace App\Tests;
 
 use App\Entity\Baskets;
-use App\imports\Ingest;
-use App\Services\BasketsServices;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class BasketsServiceTest extends KernelTestCase

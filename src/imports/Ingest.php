@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Exception\JsonException;
 
 class Ingest
 {
-    public function getJson($filePath): array
+    public function get($filePath): array
     {
         if (!file_exists($filePath)) {
             return ['error' => 'File not found.'];

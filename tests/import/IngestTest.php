@@ -16,7 +16,7 @@ class IngestTest extends KernelTestCase
 
         $json_file = $this->project_dir.'/var/test/ingestTest.json';
         $ingest = new Ingest();
-        $result = $ingest->getJson($json_file);
+        $result = $ingest->get($json_file);
 
         $this->assertIsArray($result, 'The result should be an array.');
     }
