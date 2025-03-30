@@ -23,9 +23,7 @@ class BasketsServices
         if (empty($baskets)) {
             throw new \Exception('No baskets to insert');
         }
-
         foreach ($baskets as $basket) {
-            // Vérifiez que chaque élément de $baskets est un tableau
             if (!is_array($basket)) {
                 throw new \Exception('Invalid basket format: expected array, got '.gettype($basket));
             }
