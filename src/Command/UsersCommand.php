@@ -43,24 +43,24 @@ class UsersCommand extends Command
             return Command::FAILURE;
         }
 
-        $read_json = new Ingest();
-        $users = [];
+        // $read_json = new Ingest();
+        // $users = [];
 
-        try {
-            $users = $read_json->getJson($user_json);
+        // try {
+        //     $users = $read_json->getJson($user_json);
 
-            $save = $usersservices->saveUsers($users);
+        //     $save = $usersservices->saveUsers($users);
 
-            $io->info(count($users).' users getting');
+        //     $io->info(count($users).' users getting');
 
-            if ($save) {
-                $io->info($this->usersRepository->count([]).' users put into database');
-            }
-        } catch (\Exception $e) {
-            $io->error('Erreur lors de la lecture du fichier : '.$e->getMessage());
+        //     if ($save) {
+        //         $io->info($this->usersRepository->count([]).' users put into database');
+        //     }
+        // } catch (\Exception $e) {
+        //     $io->error('Erreur lors de la lecture du fichier : '.$e->getMessage());
 
-            return Command::FAILURE;
-        }
+        //     return Command::FAILURE;
+        // }
 
         return Command::SUCCESS;
     }

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Exception\JsonException;
 
 class Ingest
 {
-    public function get($filePath): array
+    public function get(string $filePath): array
     {
         if (!file_exists($filePath)) {
             return ['error' => 'File not found.'];
@@ -22,6 +22,17 @@ class Ingest
         } catch (JsonException $e) {
             return ['error' => 'Invalid JSON format: '.$e->getMessage()];
         }
+
+        return $this->sanitizeData($data);
+    }
+
+    private function sanitizeData(array $data): array
+    {
+        array_walk_recursive($data, function (&$value) {
+            if (is_string($value)) {
+                $value = htmlspecialchars(strip_tags(trim($value)), ENT_QUOTES, 'UTF-8');
+            }
+        });
 
         return $data;
     }
